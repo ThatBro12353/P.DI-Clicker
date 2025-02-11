@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+#clicker-container {
+    margin-top: 20px;
+}
+
+#clicker {
+    width: 200px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+#upgrades {
+    margin-top: 30px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+h3 {
+    margin-top: 30px;
+    color: #555;
+}
