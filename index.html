@@ -1,26 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diddy Clicker</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Diddy Clicker</h1>
-    <div id="clicker-container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/P._Diddy_2015.jpg/500px-P._Diddy_2015.jpg" alt="P. Diddy" id="clicker" />
-        <p>Clicks: <span id="clicks">0</span></p>
-        <p>Clicks per second: <span id="clicksPerSecond">0</span></p>
-    </div>
-    
-    <div id="upgrades">
-        <h3>Upgrades</h3>
-        <button id="upgrade1">+0.1 CPS ($100)</button>
-        <button id="upgrade2">+1 CPS ($1000)</button>
-        <button id="rebirth">Rebirth (Reset everything for a 10% CPS boost) ($10000)</button>
-    </div>
+let clicks = 0;
+let clicksPerSecond = 0;
+let upgrade1Price = 10;
+let upgrade2Price = 100;
+let rebirthPrice = 1000;
+let rebirthMultiplier = 1.5; // 50% boost after rebirth
 
-    <script src="script.js"></script>
-</body>
-</html>
+// Elements
+const clicksDisplay = document.getElementById("clicks");
+const cpsDisplay = document.getElementById("clicksPerSecond");
+const upgrade1Button = document.getElementById("upgrade1");
+const upgrade2Button = document.getElementById("upgrade2");
+const rebirthButton = document.getElementById("rebirth");
+const clicker = document.getElementById("clicker");
+
+// Clicking functionality
+clicker.addEventListener("click", () => {
+    clicks += 1;
+    updateDisplay();
+});
+
+// Upgrade 1: Increase CPS by 0.1
+upgrade1Button.addEventListener("click", () => {
+    if (clicks >= upgrade1Price) {
+        clicks -= upgrade1Price;
+        clicksPerSecond += 0.1;
+        upgrade1Price = Math.floor(upgrade1Price * 1.5); // increase price for the next purchase
+        updateDisplay();
+        upgrade1Button.textContent = `+0.1 CPS ($${upgrade1Price})`;
+    }
+});
+
+// Upgrade 2: Increase CPS by 1
+upgrade2Button.addEventListener("click", () => {
+    if (clicks >= upgrade2Price) {
+        clicks -= upgrade2Price;
+        clicksPerSecond += 1;
+        upgrade2Price = Math.floor(upgrade2Price * 1.5); // increase price for the next purchase
+        updateDisplay();
+        upgrade2Button.textContent = `+1 CPS ($${upgrade2Price})`;
+    }
+});
+
+// Rebirth functionality
+rebirthButton.addEventListener("click", () => {
+    if (clicks >= rebirthPrice) {
+        clicks = 0;
+        clicksPerSecond = 0;
+        rebirthPrice = Math.floor(rebirthPrice * 1.5); // increase price for next rebirth
+        clicksPerSecond *= rebirthMultiplier; // apply the rebirth boost
+        updateDisplay();
+        alert("Rebirth successful! You've gained a 10% CPS boost.");
+    }
+});
+
+// Update the displayed values
+function updateDisplay() {
+    clicksDisplay.textContent = clicks;
+    cpsDisplay.textContent = clicksPerSecond.toFixed(1);
+}
+
+// Automatically earn clicks based on CPS every second
+setInterval(() => {
+    clicks += clicksPerSecond;
+    updateDisplay();
+}, 1000);
